@@ -10,19 +10,35 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import os
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
+import nltk
 import os
+from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.data import find
+from nltk import download
 
-# Replace this with your desired download directory
-custom_path = "/home/appuser/nltk_data"
+# Step 1: Set custom path
+custom_path = "/usr/lib/nltk_data"  # ← Change this
 
-# Create the directory if it doesn't exist
+# Step 2: Create path if not exists
 os.makedirs(custom_path, exist_ok=True)
 
-# Add the custom path to NLTK's data path
+# Step 3: Append custom path to NLTK's search path
 nltk.data.path.append(custom_path)
 
-# Download vader_lexicon to the specified path
-nltk.download('vader_lexicon', download_dir=custom_path)
+# Step 4: Download the 'vader_lexicon' to the custom path
+download('vader_lexicon', download_dir=custom_path)
+
+# Step 5: Confirm it's accessible from custom path
+try:
+    _ = find('sentiment/vader_lexicon.zip')  # or 'sentiment/vader_lexicon' for newer versions
+    print("VADER lexicon found in custom path.")
+except LookupError:
+    print("VADER lexicon not found in custom path.")
+
+# Step 6: Now use the VADER analyzer (it will read from the appended path)
+sia = SentimentIntensityAnalyzer()
+print(sia.polarity_scores("The product is absolutely amazing!"))
+
 
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
