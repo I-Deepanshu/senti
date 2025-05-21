@@ -7,12 +7,17 @@ import os
 from dotenv import load_dotenv
 import pandas as pd
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import os
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
 
-# Patch the lexicon location
-nltk.data.path.append('.')
+class CustomSentimentIntensityAnalyzer(SentimentIntensityAnalyzer):
+    def __init__(self, lexicon_file="vader_lexicon.txt"):
+        self.lexicon_file = lexicon_file
+        super().__init__(lexicon_file=self.lexicon_file)
 
-analyzer = SentimentIntensityAnalyzer(lexicon_file="vader_lexicon.txt")
+# Instantiate using local lexicon
+analyzer = CustomSentimentIntensityAnalyzer()
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
