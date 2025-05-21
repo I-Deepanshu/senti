@@ -6,6 +6,13 @@ import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 import pandas as pd
+import nltk
+
+# Safely download vader_lexicon if not already present
+try:
+    nltk.data.find('sentiment/vader_lexicon.zip')
+except LookupError:
+    nltk.download('vader_lexicon')
 
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
