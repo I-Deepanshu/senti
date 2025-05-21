@@ -6,14 +6,13 @@ import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 import pandas as pd
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
 
-# Safely download vader_lexicon if not already present
-try:
-    nltk.data.find('sentiment/vader_lexicon.zip')
-except LookupError:
-    nltk.download('vader_lexicon')
+# Patch the lexicon location
+nltk.data.path.append('.')
 
+analyzer = SentimentIntensityAnalyzer(lexicon_file="vader_lexicon.txt")
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
