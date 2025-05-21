@@ -10,14 +10,20 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import os
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
+import os
 
-class CustomSentimentIntensityAnalyzer(SentimentIntensityAnalyzer):
-    def __init__(self, lexicon_file="vader_lexicon.txt"):
-        self.lexicon_file = lexicon_file
-        super().__init__(lexicon_file=self.lexicon_file)
+# Replace this with your desired download directory
+custom_path = "/home/appuser/nltk_data"
 
-# Instantiate using local lexicon
-analyzer = CustomSentimentIntensityAnalyzer()
+# Create the directory if it doesn't exist
+os.makedirs(custom_path, exist_ok=True)
+
+# Add the custom path to NLTK's data path
+nltk.data.path.append(custom_path)
+
+# Download vader_lexicon to the specified path
+nltk.download('vader_lexicon', download_dir=custom_path)
+
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
